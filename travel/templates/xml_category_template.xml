@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Categorias>
+     {% for object in query_set %}
+     	<categoria>
+     		<id>{{object.pk}}</id>
+     		<id_root>{{object.id_root}}</id_root>
+	     	<nombre>{{object.nombre}}</nombre>
+	     	<imagen>{{object.imagen}}</imagen>
+	     </categoria>
+     {% endfor %}
+</Categorias>
