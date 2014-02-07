@@ -5,6 +5,6 @@
      		<id>{{object.pk}}</id>
      		<id_root>{{object.id_root}}</id_root>
 	     	<nombre>{{object.nombre}}</nombre>
-	     </categoria>
+	    </categoria>
      {% endfor %}
 </Categorias>

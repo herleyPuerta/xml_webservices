@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sitios>
+	{% for object in query_set %}
+	<sitio>
+		<id>{{object.pk}}</id>
+		<idCategory>{{object.idCategoria.pk}}</idCategory>
+		<nombre>{{object.nombre}}</nombre>
+		<imagen>{{object.imagen}}</imagen>
+	</sitio>
+	{% endfor %}
+</Sitios>

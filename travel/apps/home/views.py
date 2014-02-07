@@ -1,37 +1,34 @@
 from django.http import HttpResponse
-from travel.apps.home.models import Categoria, Subcategoria, Sitio
+from travel.apps.home.models import Categoria,Sitio
 from django.template.loader import render_to_string
 from django.core import serializers
+#import xml.etree.ElementTree as ET
+from xml.etree import cElementTree as ET
+
+from lxml import objectify
+
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 
 
 def categories_xml_view(request):
-	categorias = Categoria.objects.filter(id_root=0)
+	categorias = Categoria.objects.all()
 	xml = render_to_string('xml_category_template.xml', {'query_set': categorias})
 	return HttpResponse(xml,mimetype="application/xml")
 
-def subcategories_restaurant_xml_view(request):
-	subcategorias = Categoria.objects.filter(id_root=2)
-	xml = render_to_string('xml_category_restaurant_template.xml', {'query_set': categorias})
-	return HttpResponse(xml,mimetype="application/xml")
-
-
-"""
-
-def categories_xml_view(request):
-	data = serializers.serialize("xml",Categoria.objects.all())
-	#retorna la informacion en formato json
-	return HttpResponse(data,mimetype="application/xml")
-
-
-"""
-
-def subcategories_xml_view(request):
-	subcategorias = Subcategoria.objects.all()
-	xml = render_to_string('xml_subcategory_template.xml', {'query_set': subcategorias})
-	return HttpResponse(xml,mimetype="application/xml")
 
 def sites_xml_view(request):
 	sitios = Sitio.objects.all()
 	xml = render_to_string('xml_site_template.xml', {'query_set': sitios})
 	return HttpResponse(xml,mimetype="application/xml")
+
+
+@csrf_exempt
+def get_site_view(request):
+	xmlString = request.body
+	x = objectify.fromstring(xmlString)
+	identificador = x.idCategory
+	sites = Sitio.objects.filter(idCategoria=identificador)
+	xmlForTemplate = render_to_string('xml_site_id.xml',{'query_set':sites})	
+	return HttpResponse(xmlForTemplate,mimetype="application/xml")
